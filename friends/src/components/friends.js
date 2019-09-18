@@ -14,12 +14,17 @@ useEffect(() => {
 
 },[]);
 
+const addFriend = friend => {
+    axiosWithAuth().post('http://localhost:5000/api/friends', friend)
+    .then(res => setFriendsList(res.data))
+    .catch(err => console.log(err.response));
+}
 
 return(
 <div>
 
 <h2>FRIENDS</h2>
-<FriendList />
+<FriendList addFriend={addFriend} />
 {friendsList.map(friend => {return <div key={friend.id}>{friend.name}</div>
 })}
 
