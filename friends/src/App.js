@@ -5,6 +5,16 @@ import Login from './components/login';
 import Friends from './components/friends';
 import { Route, Link, Redirect } from 'react-router-dom';
 
+const ProtectedRoute = ({component: Component, ...rest}) => {
+  return <Route {...rest} render={props => {
+    if(localStorage.getItem('token')) {
+      return <Component {...props} />;
+    } else { 
+      return <Redirect to='/login'/>;
+    }
+  }}/>;
+};
+
 const PrivateRoute = ({component: Component, ...rest}) => {
   return <Route {...rest} render={props => {
     if(localStorage.getItem('token')) {
@@ -21,8 +31,8 @@ function App() {
       
         <header className="App-header">
        <img src={logo} className="App-logo" alt="logo" />
-        <PrivateRoute path="/friends" component={Friends} />
-        <Route path="/login" component={Login} />
+        <ProtectedRoute path="/friends" component={Friends} />
+        <PrivateRoute path="/login" component={Login} />
         
       </header>
 
